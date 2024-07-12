@@ -1,0 +1,10 @@
+{
+  "name": "daily-scope-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/daily-scope-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["daily-scope"],
+  "// targets": "to see all targets run: nx show project daily-scope-e2e --web",
+  "targets": {}
+}
