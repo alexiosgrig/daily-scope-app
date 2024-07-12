@@ -1,9 +1,11 @@
-import NxWelcome from './nx-welcome';
+import { Dashboard } from '@daily-scope/ui';
+
 
 export function App() {
+
   return (
     <div>
-      <NxWelcome title="daily-scope" />
+      <Dashboard />
     </div>
   );
 }
