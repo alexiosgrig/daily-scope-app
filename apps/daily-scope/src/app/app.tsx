@@ -1,12 +1,15 @@
-import { Dashboard } from '@daily-scope/ui';
-
+import { Dashboard, ErrorPage } from '@daily-scope/ui';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 export function App() {
-
   return (
-    <div>
-      <Dashboard />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="*" element={<ErrorPage />} />
+        <Route path="/error" element={<ErrorPage />} />
+      </Routes>
+    </Router>
   );
 }
 
