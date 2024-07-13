@@ -1,21 +1,23 @@
 // components/NewsFeed.tsx
 import React, { useEffect, useState } from 'react';
 import { Article } from './Article';
-import { FetchTopHeadLinesResponse } from './entities/IFetchTopHeadlines';
 import { fetchTopHeadLines } from './api/api';
+import { IArticle } from './entities/IArticle';
+import { useNavigate } from 'react-router-dom';
 
 interface NewsFeedProps {
   query: string;
 }
+
+type SortByType = 'relevancy' | 'popularity' | 'publishedAt';
 
 export const NewsFeed: React.FC<NewsFeedProps> = ({ query }) => {
   const [articles, setArticles] = useState<IArticle[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
-  const [sortBy, setSortBy] = useState<
-    'relevancy' | 'popularity' | 'publishedAt'
-  >('publishedAt'); // Default sort is 'publishedAt'
+  const [sortBy, setSortBy] = useState<SortByType>('publishedAt'); // Default sort is 'publishedAt'
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -39,15 +41,18 @@ export const NewsFeed: React.FC<NewsFeedProps> = ({ query }) => {
     try {
       const nextPage = currentPage + 1;
       const data = await fetchTopHeadLines(nextPage, 20, query, sortBy);
-      setArticles((prevArticles) => [...prevArticles, ...data.articles]);
+      setArticles(data.articles);
       setCurrentPage(nextPage);
       setHasMore(data.articles.length > 0);
     } catch (err) {
+      navigate('error');
       console.error('Error fetching more headlines:', err);
     } finally {
       setLoading(false);
     }
   };
+
+  console.log(articles, 'articles');
 
   return (
     <main className="p-4">
@@ -78,7 +83,7 @@ export const NewsFeed: React.FC<NewsFeedProps> = ({ query }) => {
             className="bg-cyan-600 text-white py-2 px-4 rounded hover:bg-cyan-700"
             disabled={loading}
           >
-            {loading ? 'Loading...' : 'Load More'}
+            {loading ? 'Loading...' : 'Next Page'}
           </button>
         </div>
       )}
